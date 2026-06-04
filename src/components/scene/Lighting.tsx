@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 import { useSceneStore } from '@/store/useSceneStore'
+import { DAY, paletteFor, rgbOf } from '@/lib/sceneConfig'
 
 export function Lighting() {
   const ambientRef = useRef<THREE.AmbientLight>(null)
@@ -14,24 +15,21 @@ export function Lighting() {
     const ambient = ambientRef.current
     const sun = sunRef.current
     if (!ambient || !sun) return
+    const p = paletteFor(isDayMode)
 
-    gsap.to(ambient, { intensity: isDayMode ? 0.6 : 0.15, duration: 1.5 })
-    gsap.to(sun, { intensity: isDayMode ? 2.5 : 0.3, duration: 1.5 })
+    gsap.to(ambient, { intensity: p.ambientIntensity, duration: 1.5 })
+    gsap.to(sun, { intensity: p.sunIntensity, duration: 1.5 })
 
+    const ambTo = rgbOf(p.ambientColor)
     const ambProxy = { r: ambient.color.r, g: ambient.color.g, b: ambient.color.b }
-    const ambTo = isDayMode
-      ? { r: 1.0, g: 0.976, b: 0.902 }
-      : { r: 0.165, g: 0.227, b: 0.333 }
     gsap.to(ambProxy, {
       ...ambTo,
       duration: 1.5,
       onUpdate: () => ambient.color.setRGB(ambProxy.r, ambProxy.g, ambProxy.b),
     })
 
+    const sunTo = rgbOf(p.sunColor)
     const sunProxy = { r: sun.color.r, g: sun.color.g, b: sun.color.b }
-    const sunTo = isDayMode
-      ? { r: 1.0, g: 0.984, b: 0.91 }
-      : { r: 0.533, g: 0.6, b: 0.733 }
     gsap.to(sunProxy, {
       ...sunTo,
       duration: 1.5,
@@ -39,21 +37,27 @@ export function Lighting() {
     })
 
     gsap.to(sun.position, {
-      x: isDayMode ? 10 : -5,
-      y: isDayMode ? 20 : 15,
-      z: isDayMode ? 10 : 8,
+      x: p.sunPosition[0],
+      y: p.sunPosition[1],
+      z: p.sunPosition[2],
       duration: 1.5,
     })
   }, [isDayMode])
 
   return (
     <>
-      <ambientLight ref={ambientRef} intensity={0.6} color="#fff9e6" />
+      {/* Soft sky/ground fill keeps shadows luminous and pastel — the airy meadow look. */}
+      <hemisphereLight args={['#bfe6f5', '#9fd07a', 0.95]} />
+      <ambientLight
+        ref={ambientRef}
+        intensity={DAY.ambientIntensity}
+        color={DAY.ambientColor}
+      />
       <directionalLight
         ref={sunRef}
-        intensity={2.5}
-        color="#fffbe8"
-        position={[10, 20, 10]}
+        intensity={DAY.sunIntensity}
+        color={DAY.sunColor}
+        position={DAY.sunPosition}
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}

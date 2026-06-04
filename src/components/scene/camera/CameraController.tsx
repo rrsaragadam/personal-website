@@ -9,7 +9,7 @@ import { CAMERA_TARGETS } from '@/lib/cameraTargets'
 export function CameraController() {
   const { camera } = useThree()
   const { activeObject, setTransitioning } = useSceneStore()
-  const lookAtProxy = useRef({ x: 0.5, y: 0.5, z: 0 })
+  const lookAtProxy = useRef({ x: 0, y: 0.5, z: -0.2 })
 
   useEffect(() => {
     const t = activeObject ? CAMERA_TARGETS[activeObject] : CAMERA_TARGETS.default

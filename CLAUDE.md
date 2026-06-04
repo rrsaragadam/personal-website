@@ -1,7 +1,7 @@
 # Personal Projects
 
 ## Design DNA
-- Channel Apple, Wealthsimple, and Jony Ive: restrained, confident, obsessively refined.
+- Apple, Wealthsimple, and Jony Ive: restrained, confident, obsessively refined.
 - Every pixel matters. Alignment, spacing, and proportion should feel mathematically intentional.
 - Generous whitespace. Let content breathe. Density is not a virtue.
 - Muted, neutral palettes with one or two precise accent colors. No gradients unless they're subtle and purposeful.
