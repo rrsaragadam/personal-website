@@ -1,2 +1,16 @@
-#claude stuff
+# claude
 .claude/
+
+# Next.js
+.next/
+out/
+
+# Node
+node_modules/
+.pnpm-store/
+
+# Misc
+.DS_Store
+*.pem
+.env*
+!.env.example
