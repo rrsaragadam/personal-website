@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, DM_Serif_Display } from 'next/font/google'
+import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google'
 import './globals.css'
 
 const geistSans = Geist({
@@ -12,9 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const dmSerifDisplay = DM_Serif_Display({
-  variable: '--font-dm-serif',
+const instrumentSerif = Instrument_Serif({
+  variable: '--font-instrument-serif',
   weight: '400',
+  style: ['normal', 'italic'],
   subsets: ['latin'],
 })
 
@@ -23,14 +24,19 @@ export const metadata: Metadata = {
   description: 'Product Designer',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifDisplay.variable} font-sans antialiased`}
-      >
-        {children}
-      </body>
+    // Font variables live on <html> so the @theme tokens declared on :root
+    // can resolve them.
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
+    >
+      <body className="font-sans antialiased">{children}</body>
     </html>
   )
 }
