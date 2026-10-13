@@ -38,9 +38,11 @@
   color-scheme: dark;
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -128,9 +130,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   .blob {
     animation: none;
   }

@@ -1,39 +1,31 @@
 'use client'
 
-import { Backdrop } from '@/features/hero/Backdrop'
-import { HeroSection } from '@/features/hero/HeroSection'
+import dynamic from 'next/dynamic'
+import { Backdrop } from '@/features/livery/Backdrop'
 import { LiverySync } from '@/features/livery/LiverySync'
-import { Nav } from '@/features/nav/Nav'
-import { ProjectsSection } from '@/features/projects/ProjectsSection'
-import { WorkSection } from '@/features/work/WorkSection'
-import { ReadingSection } from '@/features/reading/ReadingSection'
-import { AboutSection } from '@/features/about/AboutSection'
-import { Footer } from '@/features/footer/Footer'
+import { A11yControls } from '@/features/console/A11yControls'
 
+const ConsoleCanvas = dynamic(
+  () => import('@/features/console/ConsoleCanvas').then((m) => m.ConsoleCanvas),
+  { ssr: false }
+)
+
+// The console is the website: everything is reached through its controls.
 export default function Home() {
   return (
-    <>
+    <main className="h-svh overflow-hidden">
       <LiverySync />
       <Backdrop />
-      <Nav />
-      <main>
-        <HeroSection />
-        {/* The content sheet slides up over the hero, Apple product-page style. */}
-        <div className="bg-canvas relative z-10 overflow-hidden rounded-t-[40px] shadow-[0_-30px_80px_-40px_rgb(0_0_0/0.35)] sm:rounded-t-[56px]">
-          {/* Faint livery glows keep the sheet from going flat. */}
-          <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="bg-g1 absolute top-[18%] -right-[20vw] h-[60vh] w-[45vw] rounded-full opacity-25 blur-[120px]" />
-            <div className="bg-g2 absolute top-[55%] -left-[20vw] h-[60vh] w-[45vw] rounded-full opacity-20 blur-[120px]" />
-            <div className="bg-g3 absolute -right-[15vw] bottom-[5%] h-[50vh] w-[40vw] rounded-full opacity-25 blur-[120px]" />
-          </div>
-          <ProjectsSection />
-          <WorkSection />
-          <ReadingSection />
-          <AboutSection />
-        </div>
-        <div className="bg-canvas relative z-10 h-14 rounded-b-[40px] sm:rounded-b-[56px]" />
-      </main>
-      <Footer />
-    </>
+      <A11yControls />
+      <ConsoleCanvas />
+      <p className="text-ink/45 pointer-events-none fixed inset-x-0 bottom-4 text-center font-mono text-[10px] tracking-[0.12em] uppercase sm:bottom-6 sm:text-[11px] sm:tracking-[0.22em]">
+        <span className="max-sm:hidden">
+          Scroll or drag to turn · Flip a switch · Tap the key
+        </span>
+        <span className="sm:hidden">
+          Drag the knobs · Flip a switch · Tap the key
+        </span>
+      </p>
+    </main>
   )
 }

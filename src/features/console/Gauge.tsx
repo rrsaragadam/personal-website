@@ -7,8 +7,8 @@ import { useLivery } from '@/features/livery/useLivery'
 import { materials } from './materials'
 import { textTexture, MONO } from './textures'
 import { useIgnition } from './useIgnition'
+import { useConsole } from './useConsole'
 
-const R = 0.4
 const SWEEP = THREE.MathUtils.degToRad(135)
 const MAX = 8
 
@@ -58,8 +58,11 @@ function drawFace(accent: string) {
 
 // An analog needle over an OLED face, as in the Luce cluster. It sweeps the
 // full range at ignition, idles with a faint tremor, and blips whenever the
-// finish dial clicks.
-export function Gauge(props: ThreeElements['group']) {
+// knobs click or a switch is thrown.
+export function Gauge({
+  radius: R = 0.4,
+  ...props
+}: ThreeElements['group'] & { radius?: number }) {
   const m = materials()
   const livery = useLivery((s) => s.livery)
   const startedAt = useIgnition((s) => s.startedAt)
@@ -76,6 +79,12 @@ export function Gauge(props: ThreeElements['group']) {
     face.repaint(drawFace(livery.accent[0]))
     blipAt.current = performance.now()
   }, [livery, face])
+
+  const mode = useConsole((s) => s.mode)
+  const index = useConsole((s) => s.index)
+  useEffect(() => {
+    blipAt.current = performance.now()
+  }, [mode, index])
 
   useFrame((state, dt) => {
     const now = performance.now()

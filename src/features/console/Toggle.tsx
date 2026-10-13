@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import * as THREE from 'three'
 import { RoundedBox } from '@react-three/drei'
 import {
@@ -10,7 +10,7 @@ import {
 } from '@react-three/fiber'
 import { useLivery } from '@/features/livery/useLivery'
 import { materials } from './materials'
-import { textTexture, MONO } from './textures'
+import { Engraving } from './Engraving'
 import { detent } from './detent'
 
 // Resting, the lever leans away from the viewer; flipped, it leans toward them.
@@ -19,42 +19,24 @@ const DOWN = 0.55
 
 interface ToggleProps extends Omit<ThreeElements['group'], 'onClick'> {
   label: string
+  on: boolean
   onFlip: () => void
 }
 
 // An aircraft-style bat toggle on a milled plate. Flip it and the lever snaps
-// over, its lamp lights in the finish colour, and the page travels to the
-// section on its engraved label; then it springs back.
-export function Toggle({ label, onFlip, ...props }: ToggleProps) {
+// over and its lamp lights in the finish colour; it stays latched while its
+// section is on screen.
+export function Toggle({ label, on, onFlip, ...props }: ToggleProps) {
   const m = materials()
   const livery = useLivery((s) => s.livery)
   const lever = useRef<THREE.Group>(null)
   const lamp = useRef<THREE.MeshStandardMaterial>(null)
-  const [on, setOn] = useState(false)
   const [hover, setHover] = useState(false)
-
-  const engraving = useMemo(
-    () =>
-      textTexture(512, 112, (ctx, w, h) => {
-        ctx.fillStyle = 'rgba(30,30,36,0.78)'
-        ctx.font = `600 ${h * 0.5}px ${MONO}`
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        ctx.fillText(label.toUpperCase(), w / 2, h / 2)
-      }),
-    [label]
-  )
 
   const flip = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation()
-    if (on) return
-    setOn(true)
     detent(1.4)
-    setTimeout(onFlip, 260)
-    setTimeout(() => {
-      setOn(false)
-      detent(0.6)
-    }, 1400)
+    onFlip()
   }
 
   useFrame((_, dt) => {
@@ -115,11 +97,7 @@ export function Toggle({ label, onFlip, ...props }: ToggleProps) {
           <sphereGeometry args={[0.032, 32, 32]} />
         </mesh>
       </group>
-      {/* Engraved label */}
-      <mesh rotation-x={-Math.PI / 2} position={[0, 0.031, 0.33]}>
-        <planeGeometry args={[0.5, 0.11]} />
-        <meshBasicMaterial map={engraving.tex} transparent toneMapped={false} />
-      </mesh>
+      <Engraving text={label} position={[0, 0.002, 0.33]} />
     </group>
   )
 }
