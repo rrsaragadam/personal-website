@@ -3,26 +3,17 @@
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-display: var(--font-dm-serif), Georgia, 'Times New Roman', serif;
+  --font-hand: var(--font-caveat), cursive;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html,
 body {
   height: 100%;
   overflow: hidden;
-}
-
-/* Custom scrollbar for panels */
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.35);
+  overscroll-behavior: none;
+  /* Forest shade, shown for the moment before the scene loads */
+  background: #2c3326;
+  color: #f4efe4;
 }

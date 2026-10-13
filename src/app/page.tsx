@@ -1,24 +1,20 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { DayNightToggle } from '@/components/ui/DayNightToggle'
-import { PanelOverlay } from '@/components/ui/PanelOverlay'
+import { Hud } from '@/features/journal/Hud'
 
-const DeskScene = dynamic(() => import('@/components/scene/DeskScene').then((m) => m.DeskScene), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-full w-full items-center justify-center bg-[#87ceeb]">
-      <div className="text-white/60 font-sans text-sm tracking-widest uppercase">Loading</div>
-    </div>
-  ),
-})
+const Scene = dynamic(
+  () => import('@/features/journal/Scene').then((m) => m.Scene),
+  { ssr: false }
+)
 
+// The site is a field journal on a picnic table in the woods. Everything
+// lives in its pages.
 export default function Home() {
   return (
-    <main className="relative h-screen w-screen overflow-hidden">
-      <DeskScene />
-      <DayNightToggle />
-      <PanelOverlay />
+    <main className="h-svh overflow-hidden">
+      <Scene />
+      <Hud />
     </main>
   )
 }
