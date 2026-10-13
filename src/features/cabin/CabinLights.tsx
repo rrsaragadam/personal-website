@@ -14,7 +14,18 @@ export function CabinLights() {
   return (
     <>
       <ambientLight intensity={0.35} />
-      <directionalLight position={[-1.5, 3, -2.5]} intensity={1.4} />
+      <directionalLight
+        position={[-1.5, 3, -2.5]}
+        intensity={1.4}
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-bias={-0.0004}
+        shadow-normalBias={0.02}
+        shadow-camera-left={-1.5}
+        shadow-camera-right={1.5}
+        shadow-camera-top={1.5}
+        shadow-camera-bottom={-1.5}
+      />
       <directionalLight position={[1, 2, 3]} intensity={0.5} />
       <Environment resolution={256} frames={Infinity}>
         {/* Sky overhead and the windscreen ahead */}

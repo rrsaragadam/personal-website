@@ -18,6 +18,7 @@ import { CenterConsole } from './CenterConsole'
 // display on a ball joint, and a glass key that starts it all.
 export function Cabin() {
   const focus = useRef<THREE.Object3D>(null)
+  const root = useRef<THREE.Group>(null)
   const { size } = useThree()
   const L = size.width < size.height ? PORTRAIT : LANDSCAPE
   const mode = useConsole((s) => s.mode)
@@ -29,19 +30,25 @@ export function Cabin() {
     if (mode !== 'home') start()
   }, [mode, start])
   useEffect(() => {
+    // Every part throws and catches shadow, so nothing floats.
+    root.current?.traverse((o) => {
+      if ((o as THREE.Mesh).isMesh) o.castShadow = o.receiveShadow = true
+    })
+  })
+  useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const t = setTimeout(start, reduce ? 0 : 9000)
     return () => clearTimeout(t)
   }, [start])
 
   return (
-    <>
+    <group ref={root}>
       <CameraRig focus={focus} />
       <Dashboard />
       <Binnacle position={[0, 0.93, -0.02]} rotation-x={-0.2} />
       <SteeringWheel position={[0, 0.9, 0.42]} rotation-x={-0.42} />
       <ControlDisplay ref={focus} layout={L.display} />
       <CenterConsole />
-    </>
+    </group>
   )
 }
