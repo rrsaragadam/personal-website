@@ -4,7 +4,7 @@
 - Apple, Wealthsimple, and Jony Ive: restrained, confident, obsessively refined.
 - Every pixel matters. Alignment, spacing, and proportion should feel mathematically intentional.
 - Generous whitespace. Let content breathe. Density is not a virtue.
-- Muted, neutral palettes with one or two precise accent colors. No gradients unless they're subtle and purposeful.
+- Restrained UI chrome (type, spacing, controls), expressive colour. Fun colours, rich gradients and 3D are welcome; let them live in the backdrop, the hero object and project covers so the interface stays calm.
 - Rounded corners (10–16px), soft shadows, and glass/blur effects used sparingly.
 - Interfaces should feel calm and inevitable — like there was no other way to design them.
 
