@@ -1,6 +1,5 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { Backdrop } from '@/features/hero/Backdrop'
 import { HeroSection } from '@/features/hero/HeroSection'
 import { LiverySync } from '@/features/livery/LiverySync'
@@ -11,19 +10,11 @@ import { ReadingSection } from '@/features/reading/ReadingSection'
 import { AboutSection } from '@/features/about/AboutSection'
 import { Footer } from '@/features/footer/Footer'
 
-const HeroCanvas = dynamic(
-  () => import('@/features/hero/HeroCanvas').then((m) => m.HeroCanvas),
-  {
-    ssr: false,
-  }
-)
-
 export default function Home() {
   return (
     <>
       <LiverySync />
       <Backdrop />
-      <HeroCanvas />
       <Nav />
       <main>
         <HeroSection />
