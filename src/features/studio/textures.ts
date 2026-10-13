@@ -30,22 +30,6 @@ export function brushedLinear() {
   return t
 }
 
-// Concentric brushing, as on the face of a turned dial.
-export function brushedRadial() {
-  const [c, ctx] = canvas(512, 512)
-  ctx.fillStyle = '#8a8a8a'
-  ctx.fillRect(0, 0, 512, 512)
-  for (let r = 2; r < 256; r += 0.6) {
-    const v = 105 + Math.random() * 70
-    ctx.strokeStyle = `rgba(${v},${v},${v},${0.25 + Math.random() * 0.3})`
-    ctx.lineWidth = 0.6
-    ctx.beginPath()
-    ctx.arc(256, 256, r, 0, Math.PI * 2)
-    ctx.stroke()
-  }
-  return new THREE.CanvasTexture(c)
-}
-
 // Draws text into a texture once the page's web fonts are ready, so labels
 // use Geist rather than a fallback. `repaint` redraws, optionally with a new
 // drawing function (e.g. when the livery changes).
@@ -60,7 +44,10 @@ export function textTexture(w: number, h: number, draw: Draw) {
   const repaint = (next?: Draw) => {
     if (next) current = next
     ctx.clearRect(0, 0, w, h)
+    // Each repaint starts from a clean state (alignment, fonts, fills).
+    ctx.save()
     current(ctx, w, h)
+    ctx.restore()
     tex.needsUpdate = true
   }
   repaint()
@@ -68,28 +55,16 @@ export function textTexture(w: number, h: number, draw: Draw) {
   return { tex, repaint }
 }
 
-export const SANS = 'Geist, ui-sans-serif, system-ui, sans-serif'
-export const MONO = '"Geist Mono", ui-monospace, monospace'
-
-// Fine pebble grain for the leather, used as a bump and roughness map.
-export function leatherGrain() {
-  const [c, ctx] = canvas(512, 512)
-  ctx.fillStyle = '#808080'
-  ctx.fillRect(0, 0, 512, 512)
-  for (let i = 0; i < 9000; i++) {
-    const v = 70 + Math.random() * 120
-    ctx.fillStyle = `rgba(${v},${v},${v},0.5)`
-    ctx.beginPath()
-    ctx.arc(
-      Math.random() * 512,
-      Math.random() * 512,
-      1 + Math.random() * 2.6,
-      0,
-      Math.PI * 2
-    )
-    ctx.fill()
-  }
-  const t = new THREE.CanvasTexture(c)
-  t.wrapS = t.wrapT = THREE.RepeatWrapping
-  return t
+// next/font gives each face a generated family name, exposed as a CSS
+// variable on <html>; canvas text has to use that name to get the real font.
+function family(variable: string, fallback: string) {
+  if (typeof document === 'undefined') return fallback
+  const v = getComputedStyle(document.documentElement)
+    .getPropertyValue(variable)
+    .trim()
+  return v ? `${v}, ${fallback}` : fallback
 }
+
+export const SANS = () => family('--font-geist-sans', 'sans-serif')
+export const MONO = () => family('--font-geist-mono', 'monospace')
+export const SERIF = () => family('--font-instrument-serif', 'serif')

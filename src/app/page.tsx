@@ -1,30 +1,39 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { Backdrop } from '@/features/livery/Backdrop'
-import { LiverySync } from '@/features/livery/LiverySync'
-import { A11yControls } from '@/features/console/A11yControls'
-import { CabinHint } from '@/features/cabin/CabinHint'
+import { AccentSync } from '@/features/film/AccentSync'
+import { Masthead } from '@/features/film/Masthead'
+import { Intro } from '@/features/film/Intro'
+import { Projects } from '@/features/film/Projects'
+import { Experience } from '@/features/film/Experience'
+import { Reading } from '@/features/film/Reading'
+import { Contact } from '@/features/film/Contact'
+import { useSmoothScroll } from '@/features/film/useSmoothScroll'
 
-const CabinCanvas = dynamic(
-  () => import('@/features/cabin/CabinCanvas').then((m) => m.CabinCanvas),
+const Stage = dynamic(
+  () => import('@/features/stage/Stage').then((m) => m.Stage),
   { ssr: false }
 )
 
-// The cabin is the website: everything is reached through its controls.
+// The site is a short film in five acts, played by scrolling: the type
+// sits in front, and the objects live in one studio behind it.
 export default function Home() {
+  useSmoothScroll()
+
   return (
-    <main className="h-svh overflow-hidden">
-      <LiverySync />
-      <Backdrop />
-      <A11yControls />
-      <CabinCanvas />
-      {/* Vignette, so the cabin reads as a space you're sitting in */}
+    <main className="relative">
+      <AccentSync />
+      <Stage />
+      <Masthead />
+      <Intro />
+      <Projects />
+      <Experience />
+      <Reading />
+      <Contact />
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-20 bg-[radial-gradient(120%_95%_at_50%_40%,transparent_55%,rgb(0_0_0/0.28))]"
+        className="grain pointer-events-none fixed -inset-[10%] z-40"
       />
-      <CabinHint />
     </main>
   )
 }
