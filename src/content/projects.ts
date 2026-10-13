@@ -4,17 +4,16 @@ export interface Project {
   tags: string[]
   href: string
   year: string
-  // The project's anodised finish: its chip in the sample fan, and the
-  // colour the studio light and type take on while it's in focus.
+  // The project's colour: its taped-in print in the journal.
   finish: string
   code: string
 }
 
 export const PROJECTS: Project[] = [
   {
-    title: 'Paint to Sample',
+    title: 'Field Log',
     description:
-      'This website. A scroll-driven film of machined objects in a studio, built with Three.js, React Three Fiber and GSAP.',
+      'This website: my notebook on a picnic table in the woods. Every page is painted live, built with Three.js and React Three Fiber.',
     tags: ['Three.js', 'Next.js', 'GSAP'],
     href: '#',
     year: '2026',

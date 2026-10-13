@@ -3,77 +3,17 @@
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-display:
-    var(--font-instrument-serif), Georgia, 'Times New Roman', serif;
-
-  /* A studio after dark: near-black, warm paper-white ink, and one accent
-     that AccentSync tweens to the finish in focus. */
-  --color-stage: #060607;
-  --color-ink: #ece8e1;
-  --color-accent: var(--accent);
+  --font-hand: var(--font-caveat), cursive;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-:root {
-  --accent: #ff5b1f;
-  color-scheme: dark;
-}
-
-html {
-  background: var(--color-stage);
-  color: var(--color-ink);
-}
-
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-::selection {
-  background: var(--accent);
-  color: var(--color-stage);
-}
-
-/* Film grain over everything, so the black has tooth and the type sits in
-   the same physical space as the objects. */
-.grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
-  opacity: 0.22;
-  animation: grain 0.9s steps(3) infinite;
-}
-
-@keyframes grain {
-  0% {
-    transform: translate(0, 0);
-  }
-  33% {
-    transform: translate(-3%, 2%);
-  }
-  66% {
-    transform: translate(2%, -3%);
-  }
-}
-
-/* Hollow letters for the big numerals. */
-.text-outline {
-  color: transparent;
-  -webkit-text-stroke: 1px
-    color-mix(in oklab, var(--color-ink) 70%, transparent);
-}
-
-/* Split lines clip their words so they rise out of a slot. */
-.line-mask {
-  overflow: clip;
-  overflow-clip-margin: 0.12em;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .grain {
-    animation: none;
-  }
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  /* Forest shade, shown for the moment before the scene loads */
+  background: #2c3326;
+  color: #f4efe4;
 }

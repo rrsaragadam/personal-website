@@ -1,39 +1,20 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { AccentSync } from '@/features/film/AccentSync'
-import { Masthead } from '@/features/film/Masthead'
-import { Intro } from '@/features/film/Intro'
-import { Projects } from '@/features/film/Projects'
-import { Experience } from '@/features/film/Experience'
-import { Reading } from '@/features/film/Reading'
-import { Contact } from '@/features/film/Contact'
-import { useSmoothScroll } from '@/features/film/useSmoothScroll'
+import { Hud } from '@/features/journal/Hud'
 
-const Stage = dynamic(
-  () => import('@/features/stage/Stage').then((m) => m.Stage),
+const Scene = dynamic(
+  () => import('@/features/journal/Scene').then((m) => m.Scene),
   { ssr: false }
 )
 
-// The site is a short film in five acts, played by scrolling: the type
-// sits in front, and the objects live in one studio behind it.
+// The site is a field journal on a picnic table in the woods. Everything
+// lives in its pages.
 export default function Home() {
-  useSmoothScroll()
-
   return (
-    <main className="relative">
-      <AccentSync />
-      <Stage />
-      <Masthead />
-      <Intro />
-      <Projects />
-      <Experience />
-      <Reading />
-      <Contact />
-      <div
-        aria-hidden
-        className="grain pointer-events-none fixed -inset-[10%] z-40"
-      />
+    <main className="h-svh overflow-hidden">
+      <Scene />
+      <Hud />
     </main>
   )
 }
