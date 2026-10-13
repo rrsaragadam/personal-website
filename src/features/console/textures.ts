@@ -70,3 +70,26 @@ export function textTexture(w: number, h: number, draw: Draw) {
 
 export const SANS = 'Geist, ui-sans-serif, system-ui, sans-serif'
 export const MONO = '"Geist Mono", ui-monospace, monospace'
+
+// Fine pebble grain for the leather, used as a bump and roughness map.
+export function leatherGrain() {
+  const [c, ctx] = canvas(512, 512)
+  ctx.fillStyle = '#808080'
+  ctx.fillRect(0, 0, 512, 512)
+  for (let i = 0; i < 9000; i++) {
+    const v = 70 + Math.random() * 120
+    ctx.fillStyle = `rgba(${v},${v},${v},0.5)`
+    ctx.beginPath()
+    ctx.arc(
+      Math.random() * 512,
+      Math.random() * 512,
+      1 + Math.random() * 2.6,
+      0,
+      Math.PI * 2
+    )
+    ctx.fill()
+  }
+  const t = new THREE.CanvasTexture(c)
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  return t
+}

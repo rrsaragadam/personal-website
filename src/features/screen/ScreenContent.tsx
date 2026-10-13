@@ -51,12 +51,11 @@ export function ScreenContent({
   const startedAt = useIgnition((s) => s.startedAt)
   const [lit, setLit] = useState(false)
 
-  // The screen wakes a beat after ignition, and blinks off and on when the
-  // key is tapped again.
+  // The screen wakes once the binnacle has finished its sweep.
   useEffect(() => {
     if (!startedAt) return
     setLit(false)
-    const t = setTimeout(() => setLit(true), 450)
+    const t = setTimeout(() => setLit(true), 1100)
     return () => clearTimeout(t)
   }, [startedAt])
 

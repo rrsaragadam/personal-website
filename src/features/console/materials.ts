@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { brushedLinear, brushedRadial } from './textures'
+import { brushedLinear, brushedRadial, leatherGrain } from './textures'
 
 // One set of shared finishes for every part of the console: billet
 // aluminium in two brush patterns, glass, and a dark anodised trim.
@@ -9,6 +9,8 @@ function create() {
   const linear = brushedLinear()
   linear.repeat.set(2, 1)
   const radial = brushedRadial()
+  const grain = leatherGrain()
+  grain.repeat.set(14, 14)
 
   return {
     aluminium: new THREE.MeshPhysicalMaterial({
@@ -34,6 +36,18 @@ function create() {
       color: '#2a2b30',
       metalness: 0.7,
       roughness: 0.42,
+    }),
+    // Soft-touch hide for the dashboard, wheel rim and tunnel. Its colour
+    // drifts toward each finish (see Dashboard).
+    leather: new THREE.MeshPhysicalMaterial({
+      color: '#141317',
+      roughness: 0.62,
+      roughnessMap: grain,
+      bumpMap: grain,
+      bumpScale: 0.6,
+      sheen: 0.35,
+      sheenRoughness: 0.5,
+      sheenColor: new THREE.Color('#55535c'),
     }),
     // Thin cover glass: mostly reflection, so screens read clearly through it.
     // (No transmission pass, which keeps the scene cheap to render.)

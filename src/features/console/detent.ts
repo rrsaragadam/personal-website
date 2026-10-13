@@ -27,3 +27,30 @@ export function detent(strength = 1) {
     // Audio is a nicety; ignore browsers that refuse it.
   }
 }
+
+// The key seating in its dock: a soft low thump, then a short rising hum as
+// the cabin wakes.
+export function ignition() {
+  if (typeof window === 'undefined') return
+  navigator.vibrate?.([12, 60, 20])
+  try {
+    audio ??= new AudioContext()
+    const ctx = audio
+    const t = ctx.currentTime
+    const osc = ctx.createOscillator()
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(70, t)
+    osc.frequency.exponentialRampToValueAtTime(140, t + 1.2)
+    const gain = ctx.createGain()
+    gain.gain.setValueAtTime(0.0001, t)
+    gain.gain.exponentialRampToValueAtTime(0.12, t + 0.05)
+    gain.gain.exponentialRampToValueAtTime(0.04, t + 0.4)
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.4)
+    osc.connect(gain).connect(ctx.destination)
+    osc.start(t)
+    osc.stop(t + 1.5)
+  } catch {
+    // Audio is a nicety; ignore browsers that refuse it.
+  }
+  detent(1.6)
+}
